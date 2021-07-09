@@ -1,17 +1,31 @@
 package parsers
 
 import (
-	"fmt"
 	"github.com/pandulaDW/home24-page-analyzer/models"
 	"golang.org/x/net/html"
+	"regexp"
 )
 
-// GetLinkInformation returns information regarding the currently scanned tag if it's an anchor tag
+var (
+	// internalLinkRegex matches the internal links
+	internalLinkRegex = regexp.MustCompile(`^/[\w.=\-/]+`)
+
+	// externalLinkRegex matches the external links
+	externalLinkRegex = regexp.MustCompile(
+		`https?://(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&=]*)`)
+)
+
+// GetLinkInformation returns information regarding the currently scanned tag if it's an anchor tag.
+//
+// Extracted links can be of internal, external or malformed links
 func GetLinkInformation(tokenizer *html.Tokenizer, currentTag string, count *models.LinkCount) {
 	if currentTag == "a" {
 		link := getLinkUrl(tokenizer)
-		fmt.Println(link)
-		count.InternalLinkCount++
+		if isInternalLink(link) {
+			count.InternalLinkCount++
+		} else if isExternalLink(link) {
+			count.ExternalLinkCount++
+		}
 	}
 }
 
@@ -32,4 +46,14 @@ func getLinkUrl(tokenizer *html.Tokenizer) string {
 	}
 
 	return url
+}
+
+// isInternalLink returns true if the given link url is an internal link, false otherwise
+func isInternalLink(url string) bool {
+	return internalLinkRegex.MatchString(url)
+}
+
+// isExternalLink returns true if the given link url is an external link, false otherwise
+func isExternalLink(url string) bool {
+	return externalLinkRegex.MatchString(url)
 }

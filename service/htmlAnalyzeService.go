@@ -7,8 +7,7 @@ import (
 	"io"
 )
 
-// HtmlPageDetails returns the required details extracted from the given html
-// page tokenizer.
+// HtmlPageDetails returns the required details extracted from the given html page.
 func HtmlPageDetails(r io.Reader) *models.HTMLPageDetails {
 	tokenizer := html.NewTokenizer(r)
 	var title string
