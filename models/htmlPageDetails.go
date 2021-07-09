@@ -1,5 +1,15 @@
 package models
 
+// HTMLVersion is the html version of the page
+type HTMLVersion string
+
+const (
+	HTML5   = "HTML5"
+	HTML4   = "HTML4"
+	XHTML   = "XHTML"
+	UNKNOWN = "UNKNOWN"
+)
+
 // HeadingCount returns the count of each heading tag
 type HeadingCount struct {
 	H1Count int `json:"h1_count"`
@@ -19,7 +29,8 @@ type LinkCount struct {
 
 // HTMLPageDetails holds details extracted from a particular html page
 type HTMLPageDetails struct {
-	Title        string `json:"title"`
+	HTMLVersion  HTMLVersion `json:"html_version"`
+	Title        string      `json:"title"`
 	HeadingCount `json:"heading_count"`
 	LinkCount    `json:"link_count"`
 	IsLoginForm  bool `json:"is_login_form"`

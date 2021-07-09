@@ -10,7 +10,7 @@ import (
 
 func main() {
 	start := time.Now()
-	content, _ := ioutil.ReadFile("data/regex.html")
+	content, _ := ioutil.ReadFile("data/amazon.html")
 	doc := bytes.NewReader(content)
 
 	pageDetails := service.HtmlPageDetails(doc)

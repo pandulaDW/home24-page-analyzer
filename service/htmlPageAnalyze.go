@@ -18,6 +18,11 @@ func HtmlPageDetails(r io.Reader) *models.HTMLPageDetails {
 	outputModel := new(models.HTMLPageDetails)
 
 	for tokenType := tokenizer.Next(); tokenType != html.ErrorToken; {
+		// extracting the html version
+		if tokenType == html.DoctypeToken {
+			outputModel.HTMLVersion = parsers.GetHTMLVersion(tokenizer.Token().Data)
+		}
+
 		currentTagInBytes, _ := tokenizer.TagName()
 		currentTag := string(currentTagInBytes)
 
