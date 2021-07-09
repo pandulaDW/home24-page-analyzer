@@ -11,9 +11,11 @@ import (
 func HtmlPageDetails(r io.Reader) *models.HTMLPageDetails {
 	tokenizer := html.NewTokenizer(r)
 	externalLinks := make([]string, 0)
-	var title string
+
 	var headingCount models.HeadingCount
 	var linkCount models.LinkCount
+
+	outputModel := new(models.HTMLPageDetails)
 
 	for tokenType := tokenizer.Next(); tokenType != html.ErrorToken; {
 		currentTagInBytes, _ := tokenizer.TagName()
@@ -22,15 +24,33 @@ func HtmlPageDetails(r io.Reader) *models.HTMLPageDetails {
 		// extracting the title
 		if currentTag == "title" && tokenType == html.StartTagToken {
 			tokenType = tokenizer.Next()
-			title = tokenizer.Token().String()
+			outputModel.Title = tokenizer.Token().String()
 		}
 
 		// extracting the heading and link information
 		if tokenType == html.StartTagToken {
 			parsers.CountHeadings(currentTag, &headingCount)
+
 			link := parsers.GetLinkInformation(tokenizer, currentTag, &linkCount)
 			if link != "" {
 				externalLinks = append(externalLinks, link)
+			}
+		}
+
+		// checking if a login element exists inside a form
+		if currentTag == "form" && tokenType == html.StartTagToken {
+			for {
+				tokenType = tokenizer.Next()
+				if tag, _ := tokenizer.TagName(); string(tag) == "form" && tokenType == html.EndTagToken {
+					break
+				}
+				if tokenType == html.TextToken && parsers.IsLogin(tokenizer.Token().String()) {
+					outputModel.IsLoginForm = true
+					break
+				}
+				if tokenType == html.ErrorToken {
+					break
+				}
 			}
 		}
 
@@ -41,9 +61,7 @@ func HtmlPageDetails(r io.Reader) *models.HTMLPageDetails {
 	// get inaccessible link count
 	linkCount.InaccessibleLinkCount = checkAccessibility(externalLinks)
 
-	return &models.HTMLPageDetails{
-		Title:        title,
-		HeadingCount: headingCount,
-		LinkCount:    linkCount,
-	}
+	outputModel.HeadingCount = headingCount
+	outputModel.LinkCount = linkCount
+	return outputModel
 }

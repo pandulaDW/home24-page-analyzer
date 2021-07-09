@@ -22,4 +22,5 @@ type HTMLPageDetails struct {
 	Title        string `json:"title"`
 	HeadingCount `json:"heading_count"`
 	LinkCount    `json:"link_count"`
+	IsLoginForm  bool `json:"is_login_form"`
 }

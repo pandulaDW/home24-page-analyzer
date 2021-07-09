@@ -6,11 +6,15 @@ import (
 	"time"
 )
 
+var (
+	// httpClient defines a http client with the specified timeout
+	httpClient = http.Client{Timeout: 5 * time.Second}
+)
+
 // checkAccessibility checks if each of the external links in the linkCountObj
 // are accessible and returns the sum of inaccessible links.
 //
-// If the links take more than 3 seconds to get a response code, it will be considered
-// as an inaccessible link.
+// If a link takes more than 5 seconds to get a response, it will be considered as inaccessible
 func checkAccessibility(externalLinks []string) int {
 	ch := make(chan bool)
 	var inAccessibleCount int
@@ -23,15 +27,7 @@ func checkAccessibility(externalLinks []string) int {
 			wg.Add(1)
 			go func(link string) {
 				defer wg.Done()
-				for {
-					select {
-					case ch <- isAccessible(link):
-						return
-					case <-time.After(3 * time.Second):
-						ch <- false
-						return
-					}
-				}
+				ch <- isAccessible(link)
 			}(link)
 		}
 		wg.Wait()
@@ -52,7 +48,7 @@ func checkAccessibility(externalLinks []string) int {
 // will be considered as an accessible link. If it throws a protocol error
 // or returns a status code which is not http.StatusOK, it will be considered as an inaccessible link.
 func isAccessible(link string) bool {
-	resp, err := http.Get(link)
+	resp, err := httpClient.Get(link)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		return false
 	}
