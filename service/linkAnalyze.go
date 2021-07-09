@@ -1,13 +1,16 @@
 package service
 
 import (
-	"fmt"
 	"net/http"
 	"sync"
+	"time"
 )
 
 // checkAccessibility checks if each of the external links in the linkCountObj
 // are accessible and returns the sum of inaccessible links.
+//
+// If the links take more than 3 seconds to get a response code, it will be considered
+// as an inaccessible link.
 func checkAccessibility(externalLinks []string) int {
 	ch := make(chan bool)
 	var inAccessibleCount int
@@ -20,10 +23,17 @@ func checkAccessibility(externalLinks []string) int {
 			wg.Add(1)
 			go func(link string) {
 				defer wg.Done()
-				ch <- isAccessible(link)
+				for {
+					select {
+					case ch <- isAccessible(link):
+						return
+					case <-time.After(3 * time.Second):
+						ch <- false
+						return
+					}
+				}
 			}(link)
 		}
-
 		wg.Wait()
 	}()
 
@@ -44,7 +54,6 @@ func checkAccessibility(externalLinks []string) int {
 func isAccessible(link string) bool {
 	resp, err := http.Get(link)
 	if err != nil || resp.StatusCode != http.StatusOK {
-		fmt.Println(link)
 		return false
 	}
 	return true
