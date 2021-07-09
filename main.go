@@ -10,10 +10,8 @@ import (
 
 func main() {
 	start := time.Now()
-	content, _ := ioutil.ReadFile("data/w3schools.html")
+	content, _ := ioutil.ReadFile("data/regex.html")
 	doc := bytes.NewReader(content)
-
-	content = []byte(`<ul><li><a class="moka" href="/about">Link 1<a/></li><a href="/vision">Link 2<a/><li></li></ul>`)
 
 	pageDetails := service.HtmlPageDetails(doc)
 	fmt.Println(pageDetails)

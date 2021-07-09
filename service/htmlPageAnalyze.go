@@ -10,6 +10,7 @@ import (
 // HtmlPageDetails returns the required details extracted from the given html page.
 func HtmlPageDetails(r io.Reader) *models.HTMLPageDetails {
 	tokenizer := html.NewTokenizer(r)
+	externalLinks := make([]string, 0)
 	var title string
 	var headingCount models.HeadingCount
 	var linkCount models.LinkCount
@@ -27,12 +28,18 @@ func HtmlPageDetails(r io.Reader) *models.HTMLPageDetails {
 		// extracting the heading and link information
 		if tokenType == html.StartTagToken {
 			parsers.CountHeadings(currentTag, &headingCount)
-			parsers.GetLinkInformation(tokenizer, currentTag, &linkCount)
+			link := parsers.GetLinkInformation(tokenizer, currentTag, &linkCount)
+			if link != "" {
+				externalLinks = append(externalLinks, link)
+			}
 		}
 
 		// iterating to the next node
 		tokenType = tokenizer.Next()
 	}
+
+	// get inaccessible link count
+	linkCount.InaccessibleLinkCount = checkAccessibility(externalLinks)
 
 	return &models.HTMLPageDetails{
 		Title:        title,

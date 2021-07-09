@@ -16,17 +16,22 @@ var (
 )
 
 // GetLinkInformation returns information regarding the currently scanned tag if it's an anchor tag.
-//
+// It also returns the link if the link is an external link for checking accessibility later.
 // Extracted links can be of internal, external or malformed links
-func GetLinkInformation(tokenizer *html.Tokenizer, currentTag string, count *models.LinkCount) {
+func GetLinkInformation(tokenizer *html.Tokenizer, currentTag string, count *models.LinkCount) string {
+	var externalLink string
+
 	if currentTag == "a" {
 		link := getLinkUrl(tokenizer)
 		if isInternalLink(link) {
 			count.InternalLinkCount++
 		} else if isExternalLink(link) {
 			count.ExternalLinkCount++
+			externalLink = link
 		}
 	}
+
+	return externalLink
 }
 
 // getLinkUrl examines the current analyzed token and returns the url of the
