@@ -15,9 +15,9 @@ var (
 		`https?://(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&=]*)`)
 )
 
-// GetLinkInformation returns information regarding the currently scanned tag if it's an anchor tag.
-// It also returns the link if the link is an external link for checking accessibility later.
-// Extracted links can be of internal, external or malformed links
+// GetLinkInformation set the information regarding the currently scanned tag if it's an anchor tag.
+//
+// The function also returns the link if the link is an external link for checking accessibility later.
 func GetLinkInformation(tokenizer *html.Tokenizer, currentTag string, count *models.LinkCount) string {
 	var externalLink string
 

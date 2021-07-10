@@ -11,10 +11,6 @@ import (
 func HtmlPageDetails(r io.Reader) *models.HTMLPageDetails {
 	tokenizer := html.NewTokenizer(r)
 	externalLinks := make([]string, 0)
-
-	var headingCount models.HeadingCount
-	var linkCount models.LinkCount
-
 	outputModel := new(models.HTMLPageDetails)
 
 	for tokenType := tokenizer.Next(); tokenType != html.ErrorToken; {
@@ -34,9 +30,9 @@ func HtmlPageDetails(r io.Reader) *models.HTMLPageDetails {
 
 		// extracting the heading and link information
 		if tokenType == html.StartTagToken {
-			parsers.CountHeadings(currentTag, &headingCount)
+			parsers.CountHeadings(currentTag, &outputModel.HeadingCount)
 
-			link := parsers.GetLinkInformation(tokenizer, currentTag, &linkCount)
+			link := parsers.GetLinkInformation(tokenizer, currentTag, &outputModel.LinkCount)
 			if link != "" {
 				externalLinks = append(externalLinks, link)
 			}
@@ -64,9 +60,7 @@ func HtmlPageDetails(r io.Reader) *models.HTMLPageDetails {
 	}
 
 	// get inaccessible link count
-	linkCount.InaccessibleLinkCount = checkAccessibility(externalLinks)
+	outputModel.LinkCount.InaccessibleLinkCount = checkAccessibility(externalLinks)
 
-	outputModel.HeadingCount = headingCount
-	outputModel.LinkCount = linkCount
 	return outputModel
 }
