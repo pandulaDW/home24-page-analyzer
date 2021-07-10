@@ -1,19 +1,13 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
-	"github.com/pandulaDW/home24-page-analyzer/service"
-	"io/ioutil"
-	"time"
+	"github.com/pandulaDW/home24-page-analyzer/handlers"
+	"log"
+	"net/http"
 )
 
 func main() {
-	start := time.Now()
-	content, _ := ioutil.ReadFile("data/regex.html")
-	doc := bytes.NewReader(content)
-
-	pageDetails := service.HtmlPageDetails(doc)
-	fmt.Println(pageDetails)
-	fmt.Println(time.Since(start))
+	router := http.NewServeMux()
+	router.HandleFunc("/url-analyze", handlers.UrlAnalyzeHandler)
+	log.Fatal(http.ListenAndServe(":8080", router))
 }

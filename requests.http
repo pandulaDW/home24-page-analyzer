@@ -1,0 +1,31 @@
+### valid request
+POST localhost:8080/url-analyze
+Content-Type: application/json
+
+{
+  "url": "https://example.com/"
+}
+
+### invalid request with empty url
+POST localhost:8080/url-analyze
+Content-Type: application/json
+
+{
+  "url": ""
+}
+
+### invalid request with no url field
+POST localhost:8080/url-analyze
+Content-Type: application/json
+
+{
+  "test-url": "https://regex101.com/"
+}
+
+### invalid url
+POST localhost:8080/url-analyze
+Content-Type: application/json
+
+{
+  "url": "https://testing@test.com"
+}
