@@ -1,13 +1,13 @@
 ### valid request
-POST http://localhost:8080/url-analyze
+POST https://home24-page-analyzer.herokuapp.com/url-analyze
 Content-Type: application/json
 
 {
-  "url": "https://example.com/"
+  "url": "http://example.com/"
 }
 
 ### invalid request with empty url
-POST http://localhost:8080/url-analyze
+POST https://home24-page-analyzer.herokuapp.com/url-analyze
 Content-Type: application/json
 
 {
@@ -15,7 +15,7 @@ Content-Type: application/json
 }
 
 ### invalid request with no url field
-POST http://localhost:8080/url-analyze
+POST https://home24-page-analyzer.herokuapp.com/url-analyze
 Content-Type: application/json
 
 {
@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ### invalid url
-POST http://localhost:8080/url-analyze
+POST https://home24-page-analyzer.herokuapp.com/url-analyze
 Content-Type: application/json
 
 {

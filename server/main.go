@@ -14,6 +14,9 @@ import (
 
 func main() {
 	router := http.NewServeMux()
+	staticServe := http.FileServer(http.Dir("./web"))
+
+	router.Handle("/", staticServe)
 	router.HandleFunc("/url-analyze", handlers.UrlAnalyzeHandler)
 
 	// a random port will be assigned by heroku in production
@@ -22,14 +25,7 @@ func main() {
 		port = "8080"
 	}
 
-	server := &http.Server{
-		Addr:         ":" + port,
-		Handler:      router,
-		IdleTimeout:  120 * time.Second,
-		ReadTimeout:  1 * time.Second,
-		WriteTimeout: 1 * time.Second,
-	}
-
+	server := &http.Server{Addr: ":" + port, Handler: router}
 	go func() {
 		err := server.ListenAndServe()
 		if err != nil {
