@@ -1,5 +1,8 @@
+# Intelij files
 .idea/*
-data
+
+# server files
+server/data
 
 
 # client files
