@@ -7,7 +7,7 @@ import (
 	"github.com/pandulaDW/home24-page-analyzer/services"
 )
 
-// setupCorsResponse write the cors orgiin headers to the response
+// setupCorsResponse write the cors orgin headers to the response
 func setupCorsResponse(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")

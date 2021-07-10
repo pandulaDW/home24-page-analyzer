@@ -1,5 +1,5 @@
 ### valid request
-POST localhost:8080/url-analyze
+POST http://localhost:8080/url-analyze
 Content-Type: application/json
 
 {
@@ -7,7 +7,7 @@ Content-Type: application/json
 }
 
 ### invalid request with empty url
-POST localhost:8080/url-analyze
+POST http://localhost:8080/url-analyze
 Content-Type: application/json
 
 {
@@ -15,7 +15,7 @@ Content-Type: application/json
 }
 
 ### invalid request with no url field
-POST localhost:8080/url-analyze
+POST http://localhost:8080/url-analyze
 Content-Type: application/json
 
 {
@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ### invalid url
-POST localhost:8080/url-analyze
+POST http://localhost:8080/url-analyze
 Content-Type: application/json
 
 {
