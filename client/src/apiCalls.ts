@@ -5,11 +5,13 @@ let uri = process.env.REACT_APP_HOST;
 const port = process.env.REACT_APP_PORT;
 
 if (port) {
-  uri = `${uri}:${port}`;
+  uri = `http://${uri}:${port}`;
+} else {
+  uri = `https://${uri}`;
 }
 
 export const fetchPageAnalysisData = (
   data: RequestBody
 ): Promise<AxiosResponse<ResponseBody>> => {
-  return axios.post(`http://${uri}/url-analyze`, data);
+  return axios.post(`${uri}/url-analyze`, data);
 };
