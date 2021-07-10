@@ -17,5 +17,4 @@ RUN apk --no-cache add ca-certificates
 COPY --from=builder /main ./
 COPY --from=node_builder /build ./web
 RUN chmod +x ./main
-EXPOSE 8080
 CMD ./main
