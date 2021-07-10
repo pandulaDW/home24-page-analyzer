@@ -1,14 +1,28 @@
 package handlers
 
 import (
+	"net/http"
+
 	"github.com/pandulaDW/home24-page-analyzer/models"
 	"github.com/pandulaDW/home24-page-analyzer/services"
-	"net/http"
 )
+
+// setupCorsResponse write the cors orgiin headers to the response
+func setupCorsResponse(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Authorization")
+}
 
 // UrlAnalyzeHandler will handle the requests coming to the url-analyze route
 func UrlAnalyzeHandler(w http.ResponseWriter, r *http.Request) {
-	// set content type header
+	// set content type and cors headers
+	setupCorsResponse(w, r)
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 
 	// decode and validate request body

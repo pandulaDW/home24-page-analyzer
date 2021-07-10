@@ -1,9 +1,10 @@
 package parsers
 
 import (
+	"testing"
+
 	"github.com/pandulaDW/home24-page-analyzer/models"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestGetHTMLVersion(t *testing.T) {
@@ -71,6 +72,7 @@ func TestIsLogin(t *testing.T) {
 	assert.True(t, IsLogin("Login in"))
 	assert.True(t, IsLogin("Sign IN"))
 	assert.True(t, IsLogin("SIGN IN"))
+	assert.True(t, IsLogin("log in"))
 
 	// assert that incorrect formats are identified
 	assert.False(t, IsLogin("test sign"))

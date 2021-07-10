@@ -1,12 +1,13 @@
 package parsers
 
 import (
-	"github.com/pandulaDW/home24-page-analyzer/models"
 	"regexp"
+
+	"github.com/pandulaDW/home24-page-analyzer/models"
 )
 
 var (
-	isLoginRegex = regexp.MustCompile(`(?i)^(login|sign)(\sin)?$`)
+	isLoginRegex = regexp.MustCompile(`(?i)^(log in|login|sign)(\sin)?$`)
 	isHtml5      = regexp.MustCompile(`(?i)^html$`)
 	isHtml4      = regexp.MustCompile(`(?i)^.*/html4/.*$`)
 	isXhtml      = regexp.MustCompile(`(?i)^.*/(xhtml1|xhtml11)/.*$`)

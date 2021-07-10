@@ -11,5 +11,5 @@ if (port) {
 export const fetchPageAnalysisData = (
   data: RequestBody
 ): Promise<AxiosResponse<ResponseBody>> => {
-  return axios.post(`${uri}/url-analyze`, data);
+  return axios.post(`http://${uri}/url-analyze`, data);
 };
