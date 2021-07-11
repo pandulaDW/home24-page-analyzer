@@ -1,11 +1,12 @@
 import React, { useState, useRef } from "react";
 import { AxiosError } from "axios";
 import ValidResponse from "./ValidResponse";
-import InvalidResponse from "./InvalidResponse";
+import InvalidResponse from "./ErrorResponse";
 import { fetchPageAnalysisData } from "../apiCalls";
 import { ErrorResponseBody, ResponseBody } from "../models/urlModels";
 
 const Form = () => {
+  const [disabled, setDisabled] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [responseData, setResponseData] = useState<
     ResponseBody | ErrorResponseBody | undefined
@@ -15,6 +16,7 @@ const Form = () => {
     e: React.MouseEvent<HTMLFormElement, MouseEvent>
   ) => {
     e.preventDefault();
+    setDisabled(true);
     try {
       const response = await fetchPageAnalysisData({
         url: inputRef.current?.value || "",
@@ -26,6 +28,7 @@ const Form = () => {
     } finally {
       inputRef.current!.value = "";
       inputRef.current?.focus();
+      setDisabled(false);
     }
   };
 
@@ -51,7 +54,9 @@ const Form = () => {
           placeholder="Enter url..."
           ref={inputRef}
         />
-        <button type="submit">Analyze Page</button>
+        <button type="submit" disabled={disabled}>
+          Analyze Page
+        </button>
       </form>
       {urlDataComponent}
     </div>

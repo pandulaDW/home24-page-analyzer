@@ -7,7 +7,7 @@ interface Props {
 
 const ValidResponse: React.FC<Props> = ({ urlResponse }) => {
   return (
-    <div>
+    <div className="valid-response">
       <ul>
         <li>
           <span>HTML Version - </span>
@@ -19,7 +19,7 @@ const ValidResponse: React.FC<Props> = ({ urlResponse }) => {
         </li>
         <li>
           <span>Header Information</span>
-          <ul>
+          <ul className="valid-response_sub-ul">
             <li>
               <span>h1 Count - </span>
               <span>{urlResponse.heading_count.h1_count}</span>
@@ -48,7 +48,7 @@ const ValidResponse: React.FC<Props> = ({ urlResponse }) => {
         </li>
         <li>
           <span>Link Information</span>
-          <ul>
+          <ul className="valid-response_sub-ul">
             <li>
               <span>Internal Link Count - </span>
               <span>{urlResponse.link_count.internal_link_count}</span>
