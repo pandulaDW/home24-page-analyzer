@@ -112,14 +112,16 @@ body {
   padding: 2rem;
   flex-direction: column;
   text-align: center;
-  margin-top: 3rem;
+  margin-top: 3.5rem;
   color: rgb(112, 112, 112);
+  font-size: 1.5rem;
 }
 
 .invalid-response h2 {
   color: rgb(131, 15, 15);
   margin-bottom: 1rem;
   font-weight: 300;
+  font-size: 2rem;
 }
 
 .invalid-response span:first-child {
