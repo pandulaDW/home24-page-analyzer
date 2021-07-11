@@ -27,10 +27,7 @@ func main() {
 
 	server := &http.Server{Addr: ":" + port, Handler: router}
 	go func() {
-		err := server.ListenAndServe()
-		if err != nil {
-			log.Fatal(err)
-		}
+		log.Fatal(server.ListenAndServe())
 	}()
 	log.Printf("server listening to requests at port %s...", port)
 
@@ -44,8 +41,5 @@ func main() {
 	ctx, cancel := context.WithDeadline(context.Background(), d)
 	defer cancel()
 
-	err := server.Shutdown(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Fatal(server.Shutdown(ctx))
 }

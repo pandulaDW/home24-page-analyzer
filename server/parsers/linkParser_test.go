@@ -1,11 +1,12 @@
 package parsers
 
 import (
+	"strings"
+	"testing"
+
 	"github.com/pandulaDW/home24-page-analyzer/models"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/net/html"
-	"strings"
-	"testing"
 )
 
 func TestGetLinkInformation(t *testing.T) {
@@ -56,11 +57,11 @@ func TestIsInternalLink(t *testing.T) {
 
 func TestIsExternalLink(t *testing.T) {
 	// assert that correct external links are identified
-	assert.True(t, isExternalLink("https://google.com"))
-	assert.True(t, isExternalLink("http://shoplify.com"))
-	assert.True(t, isExternalLink("https://www.amazon.com"))
+	assert.True(t, IsExternalLink("https://google.com"))
+	assert.True(t, IsExternalLink("http://shoplify.com"))
+	assert.True(t, IsExternalLink("https://www.amazon.com"))
 
 	// assert that incorrect external links are identified
-	assert.False(t, isExternalLink("/about/shop"))
-	assert.False(t, isExternalLink("test-site"))
+	assert.False(t, IsExternalLink("/about/shop"))
+	assert.False(t, IsExternalLink("test-site"))
 }

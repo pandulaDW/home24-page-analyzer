@@ -3,7 +3,7 @@ POST https://home24-page-analyzer.herokuapp.com/url-analyze
 Content-Type: application/json
 
 {
-  "url": "http://example.com/"
+  "url": "https://www.amazon.com/"
 }
 
 ### invalid request with empty url

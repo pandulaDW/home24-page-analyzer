@@ -1,9 +1,10 @@
 package parsers
 
 import (
+	"regexp"
+
 	"github.com/pandulaDW/home24-page-analyzer/models"
 	"golang.org/x/net/html"
-	"regexp"
 )
 
 var (
@@ -25,7 +26,7 @@ func GetLinkInformation(tokenizer *html.Tokenizer, currentTag string, count *mod
 		link := getLinkUrl(tokenizer)
 		if isInternalLink(link) {
 			count.InternalLinkCount++
-		} else if isExternalLink(link) {
+		} else if IsExternalLink(link) {
 			count.ExternalLinkCount++
 			externalLink = link
 		}
@@ -58,7 +59,7 @@ func isInternalLink(url string) bool {
 	return internalLinkRegex.MatchString(url)
 }
 
-// isExternalLink returns true if the given link url is an external link, false otherwise
-func isExternalLink(url string) bool {
+// IsExternalLink returns true if the given link url is an external link, false otherwise
+func IsExternalLink(url string) bool {
 	return externalLinkRegex.MatchString(url)
 }

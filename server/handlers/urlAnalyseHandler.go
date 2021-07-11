@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/pandulaDW/home24-page-analyzer/models"
+	"github.com/pandulaDW/home24-page-analyzer/parsers"
 	"github.com/pandulaDW/home24-page-analyzer/services"
 )
 
@@ -17,16 +17,15 @@ func setupCorsResponse(w http.ResponseWriter, r *http.Request) {
 
 // UrlAnalyzeHandler will handle the requests coming to the url-analyze route
 func UrlAnalyzeHandler(w http.ResponseWriter, r *http.Request) {
-	log.Println(http.MethodGet + " " + r.URL.Path)
-
-	// set content type and cors headers
+	// set cors and content type headers
 	setupCorsResponse(w, r)
+	w.Header().Set("Content-Type", "application/json")
+
+	// send preflight options response when requested
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
 		return
 	}
-
-	w.Header().Set("Content-Type", "application/json")
 
 	// decode and validate request body
 	requestBody, err := models.DecodeRequestURLBody(r)
@@ -35,10 +34,16 @@ func UrlAnalyzeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// validate and get the url content
+	// validate url format
+	if !parsers.IsExternalLink(requestBody.Url) {
+		models.EncodeError(w, "validation error", "provided url is not valid", http.StatusBadRequest)
+		return
+	}
+
+	// validate url reachability
 	requestURL, err := http.Get(requestBody.Url)
 	if err != nil || requestURL.StatusCode != http.StatusOK {
-		models.EncodeError(w, "validation error", "provided url is not valid", http.StatusBadRequest)
+		models.EncodeError(w, "validation error", "provided url is not reachable", http.StatusBadRequest)
 		return
 	}
 
